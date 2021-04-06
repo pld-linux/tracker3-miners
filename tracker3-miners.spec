@@ -8,13 +8,13 @@
 Summary:	Tracker miners and metadata extractors
 Summary(pl.UTF-8):	Narzędzia wydobywania danych dla programu Tracker
 Name:		tracker3-miners
-Version:	3.0.4
+Version:	3.1.1
 Release:	1
 # see COPYING for details
 License:	LGPL v2.1+ (libs), GPL v2+ (miners)
 Group:		Applications
-Source0:	https://download.gnome.org/sources/tracker-miners/3.0/tracker-miners-%{version}.tar.xz
-# Source0-md5:	942e928d21b647d5dc236d2b9d1f2eec
+Source0:	https://download.gnome.org/sources/tracker-miners/3.1/tracker-miners-%{version}.tar.xz
+# Source0-md5:	93e1f45dee14826c0cbcd25a14feebde
 URL:		https://wiki.gnome.org/Projects/Tracker
 BuildRequires:	NetworkManager-devel
 BuildRequires:	asciidoc
@@ -34,7 +34,7 @@ BuildRequires:	gstreamer-plugins-base-devel >= 1.0
 BuildRequires:	gupnp-dlna-devel >= 0.9.4
 BuildRequires:	gupnp-dlna-gst-devel >= 0.9.4
 %endif
-BuildRequires:	libcue-devel
+BuildRequires:	libcue-devel >= 2.0.0
 BuildRequires:	libexif-devel >= 0.6
 BuildRequires:	libgrss-devel >= 0.7
 BuildRequires:	libgsf-devel >= 1.14.24
@@ -57,7 +57,7 @@ BuildRequires:	poppler-glib-devel >= 0.16.0
 BuildRequires:	rpmbuild(macros) >= 1.736
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	totem-pl-parser-devel
-BuildRequires:	tracker3-devel >= 3.0.0
+BuildRequires:	tracker3-devel >= 3.1.0
 BuildRequires:	tracker3-testutils >= 3.0.0
 BuildRequires:	upower-devel >= 0.9.0
 BuildRequires:	xz
@@ -70,6 +70,7 @@ Requires:	glib2 >= 1:2.62.0
 Requires:	gupnp-dlna >= 0.9.4
 Requires:	gupnp-dlna-gst >= 0.9.4
 %endif
+Requires:	libcue >= 2.0.0
 Requires:	libexif >= 0.6
 Requires:	libgrss >= 0.7
 Requires:	libgsf >= 1.14.24
@@ -148,8 +149,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/tracker-miners-%{abiver}/extract-modules/libextract-abw.so
 %attr(755,root,root) %{_libdir}/tracker-miners-%{abiver}/extract-modules/libextract-bmp.so
 %attr(755,root,root) %{_libdir}/tracker-miners-%{abiver}/extract-modules/libextract-desktop.so
+%attr(755,root,root) %{_libdir}/tracker-miners-%{abiver}/extract-modules/libextract-disc-generic.so
 %attr(755,root,root) %{_libdir}/tracker-miners-%{abiver}/extract-modules/libextract-dummy.so
-%attr(755,root,root) %{_libdir}/tracker-miners-%{abiver}/extract-modules/libextract-dvi.so
 %attr(755,root,root) %{_libdir}/tracker-miners-%{abiver}/extract-modules/libextract-epub.so
 # R: giflib
 %attr(755,root,root) %{_libdir}/tracker-miners-%{abiver}/extract-modules/libextract-gif.so
@@ -211,7 +212,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/tracker3-miners/extract-rules/10-abw.rule
 %{_datadir}/tracker3-miners/extract-rules/10-bmp.rule
 %{_datadir}/tracker3-miners/extract-rules/10-desktop.rule
-%{_datadir}/tracker3-miners/extract-rules/10-dvi.rule
 %{_datadir}/tracker3-miners/extract-rules/10-epub.rule
 %{_datadir}/tracker3-miners/extract-rules/10-gif.rule
 %{_datadir}/tracker3-miners/extract-rules/10-html.rule
@@ -233,6 +233,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/tracker3-miners/extract-rules/15-playlist.rule
 # libextract-text
 %{_datadir}/tracker3-miners/extract-rules/15-text.rule
+%{_datadir}/tracker3-miners/extract-rules/90-disc-generic.rule
 # libextract-gstreamer
 %{_datadir}/tracker3-miners/extract-rules/90-gstreamer-audio-generic.rule
 # libextract-gstreamer
