@@ -57,8 +57,8 @@ BuildRequires:	poppler-glib-devel >= 0.16.0
 BuildRequires:	rpmbuild(macros) >= 1.736
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	totem-pl-parser-devel
-BuildRequires:	tracker3-devel >= 3.1.0
-BuildRequires:	tracker3-testutils >= 3.0.0
+BuildRequires:	tracker3-devel >= 3.2.0
+BuildRequires:	tracker3-testutils >= 3.2.0
 BuildRequires:	upower-devel >= 0.9.0
 BuildRequires:	xz
 BuildRequires:	zlib-devel
@@ -77,7 +77,7 @@ Requires:	libgsf >= 1.14.24
 Requires:	libosinfo >= 0.2.9
 Requires:	libxml2 >= 1:2.6
 Requires:	systemd-units >= 1:242
-Requires:	tracker3 >= 3.0.0
+Requires:	tracker3 >= 3.2.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
