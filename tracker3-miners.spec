@@ -8,13 +8,13 @@
 Summary:	Tracker miners and metadata extractors
 Summary(pl.UTF-8):	Narzędzia wydobywania danych dla programu Tracker
 Name:		tracker3-miners
-Version:	3.1.2
+Version:	3.2.0
 Release:	1
 # see COPYING for details
 License:	LGPL v2.1+ (libs), GPL v2+ (miners)
 Group:		Applications
-Source0:	https://download.gnome.org/sources/tracker-miners/3.1/tracker-miners-%{version}.tar.xz
-# Source0-md5:	51978c7f6ba10dfda2ad377f3ded85f1
+Source0:	https://download.gnome.org/sources/tracker-miners/3.2/tracker-miners-%{version}.tar.xz
+# Source0-md5:	44246a34a33f93fdb608c438d972e590
 URL:		https://wiki.gnome.org/Projects/Tracker
 BuildRequires:	NetworkManager-devel
 BuildRequires:	asciidoc
@@ -27,7 +27,7 @@ BuildRequires:	exempi-devel >= 2.1.0
 %{?with_ffmpeg:BuildRequires:	ffmpeg-devel >= 0.8.4}
 BuildRequires:	gexiv2-devel
 BuildRequires:	giflib-devel
-BuildRequires:	glib2-devel >= 1:2.62.0
+BuildRequires:	glib2-devel >= 1:2.70.0
 BuildRequires:	gstreamer-devel >= 1.0
 BuildRequires:	gstreamer-plugins-base-devel >= 1.0
 %if %{with gupnp}
@@ -65,7 +65,7 @@ BuildRequires:	zlib-devel
 Requires:	dbus >= 1.3.1
 %{!?with_icu:Requires:	enca-libs >= 1.9}
 Requires:	exempi >= 2.1.0
-Requires:	glib2 >= 1:2.62.0
+Requires:	glib2 >= 1:2.70.0
 %if %{with gupnp}
 Requires:	gupnp-dlna >= 0.9.4
 Requires:	gupnp-dlna-gst >= 0.9.4
