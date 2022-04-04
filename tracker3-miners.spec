@@ -8,13 +8,13 @@
 Summary:	Tracker miners and metadata extractors
 Summary(pl.UTF-8):	Narzędzia wydobywania danych dla programu Tracker
 Name:		tracker3-miners
-Version:	3.2.1
-Release:	2
+Version:	3.3.0
+Release:	1
 # see COPYING for details
 License:	LGPL v2.1+ (libs), GPL v2+ (miners)
 Group:		Applications
-Source0:	https://download.gnome.org/sources/tracker-miners/3.2/tracker-miners-%{version}.tar.xz
-# Source0-md5:	822d829e924657fc3434d69fb5a32630
+Source0:	https://download.gnome.org/sources/tracker-miners/3.3/tracker-miners-%{version}.tar.xz
+# Source0-md5:	6947a5ae1c0fb5e681258f55603709b7
 URL:		https://wiki.gnome.org/Projects/Tracker
 BuildRequires:	NetworkManager-devel
 BuildRequires:	asciidoc
@@ -28,12 +28,13 @@ BuildRequires:	exempi-devel >= 2.1.0
 BuildRequires:	gexiv2-devel
 BuildRequires:	giflib-devel
 BuildRequires:	glib2-devel >= 1:2.70.0
-BuildRequires:	gstreamer-devel >= 1.0
-BuildRequires:	gstreamer-plugins-base-devel >= 1.0
+BuildRequires:	gstreamer-devel >= 1.20
+BuildRequires:	gstreamer-plugins-base-devel >= 1.20
 %if %{with gupnp}
 BuildRequires:	gupnp-dlna-devel >= 0.9.4
 BuildRequires:	gupnp-dlna-gst-devel >= 0.9.4
 %endif
+BuildRequires:	libblkid-devel
 BuildRequires:	libcue-devel >= 2.0.0
 BuildRequires:	libexif-devel >= 0.6
 BuildRequires:	libgrss-devel >= 0.7
@@ -57,8 +58,8 @@ BuildRequires:	poppler-glib-devel >= 0.16.0
 BuildRequires:	rpmbuild(macros) >= 2.011
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	totem-pl-parser-devel
-BuildRequires:	tracker3-devel >= 3.2.0
-BuildRequires:	tracker3-testutils >= 3.2.0
+BuildRequires:	tracker3-devel >= 3.3.0
+BuildRequires:	tracker3-testutils >= 3.3.0
 BuildRequires:	upower-devel >= 0.9.0
 BuildRequires:	xz
 BuildRequires:	zlib-devel
@@ -67,6 +68,8 @@ Requires:	dbus >= 1.3.1
 %{!?with_icu:Requires:	enca-libs >= 1.9}
 Requires:	exempi >= 2.1.0
 Requires:	glib2 >= 1:2.70.0
+Requires:	gstreamer >= 1.20
+Requires:	gstreamer-plugins-base >= 1.20
 %if %{with gupnp}
 Requires:	gupnp-dlna >= 0.9.4
 Requires:	gupnp-dlna-gst >= 0.9.4
@@ -78,7 +81,7 @@ Requires:	libgsf >= 1.14.24
 Requires:	libosinfo >= 0.2.9
 Requires:	libxml2 >= 1:2.6
 Requires:	systemd-units >= 1:250.1
-Requires:	tracker3 >= 3.2.0
+Requires:	tracker3 >= 3.3.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -210,6 +213,7 @@ rm -rf $RPM_BUILD_ROOT
 # standalone (builtin?) rules
 %{_datadir}/tracker3-miners/extract-rules/10-comics.rule
 %{_datadir}/tracker3-miners/extract-rules/10-ebooks.rule
+%{_datadir}/tracker3-miners/extract-rules/10-folder.rule
 %{_datadir}/tracker3-miners/extract-rules/10-svg.rule
 %{_datadir}/tracker3-miners/extract-rules/15-executable.rule
 %{_datadir}/tracker3-miners/extract-rules/15-games.rule
