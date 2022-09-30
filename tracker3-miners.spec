@@ -8,13 +8,13 @@
 Summary:	Tracker miners and metadata extractors
 Summary(pl.UTF-8):	Narzędzia wydobywania danych dla programu Tracker
 Name:		tracker3-miners
-Version:	3.3.1
+Version:	3.4.0
 Release:	1
 # see COPYING for details
 License:	LGPL v2.1+ (libs), GPL v2+ (miners)
 Group:		Applications
-Source0:	https://download.gnome.org/sources/tracker-miners/3.3/tracker-miners-%{version}.tar.xz
-# Source0-md5:	eac54156a33825e454d8976dba115dd8
+Source0:	https://download.gnome.org/sources/tracker-miners/3.4/tracker-miners-%{version}.tar.xz
+# Source0-md5:	1461ce9e5dc65e0aefb766a33b83b66c
 URL:		https://wiki.gnome.org/Projects/Tracker
 BuildRequires:	NetworkManager-devel
 BuildRequires:	asciidoc
@@ -58,8 +58,8 @@ BuildRequires:	poppler-glib-devel >= 0.16.0
 BuildRequires:	rpmbuild(macros) >= 2.011
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	totem-pl-parser-devel
-BuildRequires:	tracker3-devel >= 3.3.0
-BuildRequires:	tracker3-testutils >= 3.3.0
+BuildRequires:	tracker3-devel >= 3.4.0
+BuildRequires:	tracker3-testutils >= 3.4.0
 BuildRequires:	upower-devel >= 0.9.0
 BuildRequires:	xz
 BuildRequires:	zlib-devel
@@ -81,7 +81,7 @@ Requires:	libgsf >= 1.14.24
 Requires:	libosinfo >= 0.2.9
 Requires:	libxml2 >= 1:2.6
 Requires:	systemd-units >= 1:250.1
-Requires:	tracker3 >= 3.3.0
+Requires:	tracker3 >= 3.4.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
