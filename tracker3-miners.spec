@@ -8,13 +8,13 @@
 Summary:	Tracker miners and metadata extractors
 Summary(pl.UTF-8):	Narzędzia wydobywania danych dla programu Tracker
 Name:		tracker3-miners
-Version:	3.4.0
+Version:	3.4.1
 Release:	1
 # see COPYING for details
 License:	LGPL v2.1+ (libs), GPL v2+ (miners)
 Group:		Applications
 Source0:	https://download.gnome.org/sources/tracker-miners/3.4/tracker-miners-%{version}.tar.xz
-# Source0-md5:	1461ce9e5dc65e0aefb766a33b83b66c
+# Source0-md5:	407679649918d1365418e9ae8e617f36
 URL:		https://wiki.gnome.org/Projects/Tracker
 BuildRequires:	NetworkManager-devel
 BuildRequires:	asciidoc
