@@ -3,18 +3,19 @@
 %bcond_with	ffmpeg		# FFmpeg instead of GStreamer as generic media extractor
 %bcond_with	gupnp		# GStreamer gupnp backend instead of discoverer
 %bcond_with	icu		# ICU instead of enca for MP3 encoding detection
+%bcond_with	landlock	# landlock sandboxing (requires kernel 5.13 and landlock enabled in LSM)
 
 %define		abiver	3.0
 Summary:	Tracker miners and metadata extractors
 Summary(pl.UTF-8):	Narzędzia wydobywania danych dla programu Tracker
 Name:		tracker3-miners
-Version:	3.6.2
+Version:	3.7.0
 Release:	1
 # see COPYING for details
 License:	LGPL v2.1+ (libs), GPL v2+ (miners)
 Group:		Applications
-Source0:	https://download.gnome.org/sources/tracker-miners/3.6/tracker-miners-%{version}.tar.xz
-# Source0-md5:	36b1149a9b10ee3db3e3aa6d8a95c5dc
+Source0:	https://download.gnome.org/sources/tracker-miners/3.7/tracker-miners-%{version}.tar.xz
+# Source0-md5:	21cd822285a2eab20d6203275876affa
 URL:		https://wiki.gnome.org/Projects/Tracker
 BuildRequires:	NetworkManager-devel
 BuildRequires:	asciidoc
@@ -51,6 +52,7 @@ BuildRequires:	libseccomp-devel >= 2.0
 BuildRequires:	libtiff-devel >= 4
 BuildRequires:	libxml2-devel >= 1:2.6
 BuildRequires:	libxslt-progs
+%{?with_landlock:BuildRequires:	linux-libc-headers >= 7:5.13}
 BuildRequires:	meson >= 0.51
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
@@ -58,8 +60,8 @@ BuildRequires:	poppler-glib-devel >= 0.16.0
 BuildRequires:	rpmbuild(macros) >= 2.011
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	totem-pl-parser-devel
-BuildRequires:	tracker3-devel >= 3.6.0
-BuildRequires:	tracker3-testutils >= 3.6.0
+BuildRequires:	tracker3-devel >= 3.7.0
+BuildRequires:	tracker3-testutils >= 3.7.0
 BuildRequires:	upower-devel >= 0.9.0
 BuildRequires:	xz
 BuildRequires:	zlib-devel
@@ -81,7 +83,8 @@ Requires:	libgsf >= 1.14.24
 Requires:	libosinfo >= 0.2.9
 Requires:	libxml2 >= 1:2.6
 Requires:	systemd-units >= 1:250.1
-Requires:	tracker3 >= 3.6.0
+Requires:	tracker3 >= 3.7.0
+%{?with_landlock:Requires:	uname(release) >= 5.13}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -102,6 +105,7 @@ Ten pakiet zawiera narzędzia wydobywania danych dla programu Tracker.
 	-Dfunctional_tests=false \
 	-Dgeneric_media_extractor=%{?with_ffmpeg:libav}%{!?with_ffmpeg:gstreamer} \
 	-Dgstreamer_backend=%{?with_gupnp:gupnp}%{!?with_gupnp:discoverer} \
+	-Dlandlock=%{__enabled_disabled landlock} \
 	-Dsystemd_user_services_dir=%{systemduserunitdir}
 
 %ninja_build -C build
@@ -116,6 +120,13 @@ rm -rf $RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%if %{with landlock}
+%verifyscript
+if ! grep -q -s '\<landlock\>' /sys/kernel/security/lsm ; then
+	echo "LANDLOCK LSM not enabled in kernel"
+fi
+%endif
+
 %post
 %glib_compile_schemas
 %systemd_user_post tracker-extract-3.service tracker-miner-fs-3.service tracker-miner-fs-control-3.service tracker-miner-rss-3.service tracker-writeback-3.service
@@ -129,21 +140,19 @@ rm -rf $RPM_BUILD_ROOT
 %files -f tracker3-miners.lang
 %defattr(644,root,root,755)
 %doc AUTHORS COPYING MAINTAINERS NEWS README.md
+%attr(755,root,root) %{_bindir}/tracker3-daemon
+%attr(755,root,root) %{_bindir}/tracker3-extract
+%attr(755,root,root) %{_bindir}/tracker3-index
+%attr(755,root,root) %{_bindir}/tracker3-info
+%attr(755,root,root) %{_bindir}/tracker3-reset
+%attr(755,root,root) %{_bindir}/tracker3-search
+%attr(755,root,root) %{_bindir}/tracker3-status
+%attr(755,root,root) %{_bindir}/tracker3-tag
 %attr(755,root,root) %{_libexecdir}/tracker-extract-3
 %attr(755,root,root) %{_libexecdir}/tracker-miner-fs-3
 %attr(755,root,root) %{_libexecdir}/tracker-miner-fs-control-3
 %attr(755,root,root) %{_libexecdir}/tracker-miner-rss-3
 %attr(755,root,root) %{_libexecdir}/tracker-writeback-3
-%dir %{_libexecdir}/tracker3
-%attr(755,root,root) %{_libexecdir}/tracker3/daemon
-%attr(755,root,root) %{_libexecdir}/tracker3/extract
-%attr(755,root,root) %{_libexecdir}/tracker3/index
-%attr(755,root,root) %{_libexecdir}/tracker3/info
-%attr(755,root,root) %{_libexecdir}/tracker3/reset
-%attr(755,root,root) %{_libexecdir}/tracker3/search
-%attr(755,root,root) %{_libexecdir}/tracker3/status
-%attr(755,root,root) %{_libexecdir}/tracker3/tag
-%{systemduserunitdir}/tracker-extract-3.service
 %{systemduserunitdir}/tracker-miner-fs-3.service
 %{systemduserunitdir}/tracker-miner-fs-control-3.service
 %{systemduserunitdir}/tracker-miner-rss-3.service
@@ -196,7 +205,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/tracker-miners-%{abiver}/writeback-modules/libwriteback-xmp.so
 %{_datadir}/dbus-1/interfaces/org.freedesktop.Tracker3.Miner.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.Tracker3.Miner.Files.Index.xml
-%{_datadir}/dbus-1/services/org.freedesktop.Tracker3.Miner.Extract.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker3.Miner.Files.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker3.Miner.Files.Control.service
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker3.Miner.RSS.service
@@ -205,6 +213,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/glib-2.0/schemas/org.freedesktop.Tracker3.FTS.gschema.xml
 %{_datadir}/glib-2.0/schemas/org.freedesktop.Tracker3.Miner.Files.gschema.xml
 %{_datadir}/glib-2.0/schemas/org.freedesktop.TrackerMiners3.enums.xml
+%{_datadir}/tracker3/commands/tracker-daemon.desktop
+%{_datadir}/tracker3/commands/tracker-extract.desktop
+%{_datadir}/tracker3/commands/tracker-index.desktop
+%{_datadir}/tracker3/commands/tracker-info.desktop
+%{_datadir}/tracker3/commands/tracker-reset.desktop
+%{_datadir}/tracker3/commands/tracker-search.desktop
+%{_datadir}/tracker3/commands/tracker-status.desktop
+%{_datadir}/tracker3/commands/tracker-tag.desktop
 %dir %{_datadir}/tracker3-miners
 %dir %{_datadir}/tracker3-miners/domain-ontologies
 %{_datadir}/tracker3-miners/domain-ontologies/default.rule
