@@ -1,3 +1,4 @@
+# NOTE: replaced by localsearch (3.8+)
 #
 # Conditional build:
 %bcond_with	ffmpeg		# FFmpeg instead of GStreamer as generic media extractor
@@ -9,13 +10,13 @@
 Summary:	Tracker miners and metadata extractors
 Summary(pl.UTF-8):	Narzędzia wydobywania danych dla programu Tracker
 Name:		tracker3-miners
-Version:	3.7.3
-Release:	2
+Version:	3.7.4
+Release:	1
 # see COPYING for details
 License:	LGPL v2.1+ (libs), GPL v2+ (miners)
 Group:		Applications
 Source0:	https://download.gnome.org/sources/tracker-miners/3.7/tracker-miners-%{version}.tar.xz
-# Source0-md5:	8c1b48f2fa57d888967de9b5ff348fc1
+# Source0-md5:	40775d3fdab214999df344bd023dcc80
 URL:		https://wiki.gnome.org/Projects/Tracker
 BuildRequires:	NetworkManager-devel
 BuildRequires:	asciidoc
@@ -57,7 +58,7 @@ BuildRequires:	meson >= 0.51
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
 BuildRequires:	poppler-glib-devel >= 0.16.0
-BuildRequires:	rpmbuild(macros) >= 2.011
+BuildRequires:	rpmbuild(macros) >= 2.042
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	totem-pl-parser-devel
 BuildRequires:	tracker3-devel >= 3.7.0
@@ -98,7 +99,7 @@ Ten pakiet zawiera narzędzia wydobywania danych dla programu Tracker.
 %setup -q -n tracker-miners-%{version}
 
 %build
-%meson build \
+%meson \
 	--default-library=shared \
 	-Dbattery_detection=upower \
 	-Dcharset_detection=%{?with_icu:icu}%{!?with_icu:enca} \
@@ -108,12 +109,12 @@ Ten pakiet zawiera narzędzia wydobywania danych dla programu Tracker.
 	-Dlandlock=%{__enabled_disabled landlock} \
 	-Dsystemd_user_services_dir=%{systemduserunitdir}
 
-%ninja_build -C build
+%meson_build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%ninja_install -C build
+%meson_install
 
 %find_lang tracker3-miners
 
